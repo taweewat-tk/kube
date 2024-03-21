@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: lookhin4181/nevers-kube-final:v1.0.10
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
+        env:
+        - name: DATABASE_HOST
+          value: mysql
+        - name: DATABASE_PASSWORD
+          value:  Pass1234
+        - name: DATABASE_USER
+          value: root
+        - name: DATABASE_PORT
+          value: "3306"
+        - name: DATABASE_DBNAME
+          value: mydb
+        - name: SERVER_PORT
+          value: "8080"
+        - name: SERVER_BODYLIMIT
+          value: "10M"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

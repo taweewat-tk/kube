@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fe-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec: 
+  rules: 
+  - host: frontend-test.workshop.com
+    http: 
+      paths: 
+      - pathType: Prefix
+        path: /fe
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
